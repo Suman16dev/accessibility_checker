@@ -25,12 +25,12 @@ pip install flask beautifulsoup4 lxml requests
 
 - Project structure:
 accessibility_checker/
-├── app.py
-├── checker.py
-├── templates/
-│   └── index.html
-├── run_web.bat
-└── README.md
+- app.py
+- checker.py
+- templates/
+- - index.html
+- run_web.bat
+- README.md
 
 Usage
 - Double-click run_web.bat
