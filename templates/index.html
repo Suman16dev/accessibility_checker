@@ -30,16 +30,30 @@
             <button type="submit">Check Accessibility</button>
         </form>
         {% if csv_ready %}
-            <div class="report-ready">
+            <div class="report-ready" id="reportBox">
                 <b>Report is ready!</b><br>
-                <a href="/download" class="download-link">Download CSV</a>
+                <a href="/download" class="download-link" id="downloadReport">Download CSV</a>
             </div>
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    document.querySelector("form").reset();
-                });
-            </script>
         {% endif %}
+
     </div>
 </body>
 </html>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var downloadLink = document.getElementById("downloadReport");
+    var reportBox = document.getElementById("reportBox");
+    var form = document.querySelector("form");
+
+    if (downloadLink && reportBox && form) {
+        downloadLink.addEventListener("click", function() {
+            // Reset the form
+            form.reset();
+            // Hide the report box after a short delay to allow download to initiate
+            setTimeout(function() {
+                reportBox.style.display = "none";
+            }, 500); // delay in milliseconds, adjust as needed
+        });
+    }
+});
+</script>
