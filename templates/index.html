@@ -34,6 +34,11 @@
                 <b>Report is ready!</b><br>
                 <a href="/download" class="download-link">Download CSV</a>
             </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    document.querySelector("form").reset();
+                });
+            </script>
         {% endif %}
     </div>
 </body>
