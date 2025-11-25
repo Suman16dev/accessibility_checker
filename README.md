@@ -23,15 +23,6 @@ Installation
 - Install dependencies:
 pip install flask beautifulsoup4 lxml requests
 
-- Project structure:
-accessibility_checker/
-- app.py
-- checker.py
-- templates/
-- - index.html
-- run_web.bat
-- README.md
-
 Usage
 - Double-click run_web.bat
 This will launch the web server and open your default browser to http://localhost:5000.
