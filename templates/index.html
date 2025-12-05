@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Accessibility Checker</title>
     <style>
-        body {ont-family: 'Segoe UI', Arial, sans-serif; background-color: #f6f8fa; margin: 0; padding: 0;}
+        body {font-family: 'Segoe UI', Arial, sans-serif; background-color: #f6f8fa; margin: 0; padding: 0;}
         .container {max-width: 480px; margin: 40px auto; background: #fff; padding: 32px 24px 20px 24px; border-radius: 12px; box-shadow: 0 2px 12px #0002; }
         h1 { color: #065fd4; margin-bottom: 20px; text-align: center; font-weight: 600; letter-spacing: 1px; }
         form { margin-bottom: 14px; display: flex; flex-direction: column; gap: 12px; }
@@ -15,12 +15,25 @@
         .report-ready { background: #eafbee; color: #196a3f; border: 1px solid #92e3b5; padding: 12px; border-radius: 6px; margin-top: 18px; text-align: center; }
         a.download-link { display: inline-block; margin-top: 8px; color: #065fd4; font-weight: 500; text-decoration: none; padding: 10px 18px; border: 1px solid #065fd4; border-radius: 6px; background: #eaf3ff; transition: background 0.18s, border-color 0.18s; }
         a.download-link:hover { background: #d7e8fd; border-color: #0b6de3; }
+        .progress-bar-wrapper {position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: #e5e7eb; overflow: hidden; z-index: 9999; display: none;}
+        .progress-bar-inner {height: 100%; width: 0; background: linear-gradient(90deg, #065fd4, #0b6de3); transition: width 0.4s ease;}
+        .progress-bar-animated .progress-bar-inner {animation: progressIndeterminate 1.2s infinite;}
+        @keyframes progressIndeterminate {
+            0%   { width: 0;   transform: translateX(-50%); }
+            50%  { width: 60%; transform: translateX(10%);  }
+            100% { width: 100%;transform: translateX(100%); }
+        }
     </style>
 </head>
 <body>
+    <!-- Progress bar -->
+    <div class="progress-bar-wrapper" id="topProgressBar">
+        <div class="progress-bar-inner"></div>
+    </div>
+
     <div class="container">
         <h1>Accessibility Checker</h1>
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data" id="accessForm">
             <label for="url">Enter Website URL:</label>
             <input type="text" name="url" id="url" placeholder="https://example.com">
 
@@ -35,7 +48,6 @@
                 <a href="/download" class="download-link" id="downloadReport">Download CSV</a>
             </div>
         {% endif %}
-
     </div>
 </body>
 </html>
@@ -43,16 +55,25 @@
 document.addEventListener("DOMContentLoaded", function() {
     var downloadLink = document.getElementById("downloadReport");
     var reportBox = document.getElementById("reportBox");
-    var form = document.querySelector("form");
+    var form = document.getElementById("accessForm");
+    var progressBarWrapper = document.getElementById("topProgressBar");
 
+    // Show progress bar on form submit
+    if (form && progressBarWrapper) {
+        form.addEventListener("submit", function() {
+            // Show bar and enable animation
+            progressBarWrapper.style.display = "block";
+            progressBarWrapper.classList.add("progress-bar-animated");
+        });
+    }
+
+    // When user clicks download, reset and hide report box (your existing logic)
     if (downloadLink && reportBox && form) {
         downloadLink.addEventListener("click", function() {
-            // Reset the form
             form.reset();
-            // Hide the report box after a short delay to allow download to initiate
             setTimeout(function() {
                 reportBox.style.display = "none";
-            }, 500); // delay in milliseconds, adjust as needed
+            }, 500);
         });
     }
 });
